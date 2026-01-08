@@ -188,7 +188,8 @@ section {
   }
 }
 
-.section__pic-container img {
+/* Target only the image with this specific class */
+.blob-animation {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -197,8 +198,12 @@ section {
   animation: morph 20s ease-in-out infinite;
 
   /* Visual styling */
-  border: 3px solid #f3f3f3; /* Change to your theme color */
+  border: 3px solid #f3f3f3;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+
+  /* Anti-jiggle hardware acceleration */
+  transform: translateZ(0);
+  will-change: border-radius;
 }
 
 #profile {
