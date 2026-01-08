@@ -170,6 +170,37 @@ section {
 
 /* PROFILE SECTION */
 
+@keyframes morph {
+  0% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+  25% {
+    border-radius: 45% 55% 50% 50% / 35% 65% 35% 65%;
+  }
+  50% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+  75% {
+    border-radius: 55% 45% 40% 60% / 65% 35% 65% 35%;
+  }
+  100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+}
+
+.section__pic-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  /* Animation settings */
+  animation: morph 20s ease-in-out infinite;
+
+  /* Visual styling */
+  border: 3px solid #f3f3f3; /* Change to your theme color */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
 #profile {
   display: flex;
   justify-content: center;
