@@ -1,100 +1,128 @@
 /**
- * DINUSHA SANDAKELUM - PORTFOLIO MASTER SCRIPT
- * Handles Navigation, Mobile Menu, and Interaction
+ * DINUSHA SANDAKELUM - FINAL MASTER SCRIPT
  */
 
-// --- 1. NAVIGATION CONTROL (SHRINK ON SCROLL) ---
+let currentProjectPage = 1;
+const recordsPerPage = 6;
+
+// --- 1. CORE NAVIGATION LOGIC ---
 function handleScroll() {
   const desktopNav = document.getElementById("desktop-nav");
   const hamburgerNav = document.getElementById("hamburger-nav");
+  const backToTopBtn = document.getElementById("back-to-top");
 
-  // Apply "shrunk" class if page is scrolled down more than 50px
   if (window.scrollY > 50) {
-    if (desktopNav) desktopNav.classList.add("shrunk");
-    if (hamburgerNav) hamburgerNav.classList.add("shrunk");
+    desktopNav?.classList.add("shrunk");
+    hamburgerNav?.classList.add("shrunk");
   } else {
-    if (desktopNav) desktopNav.classList.remove("shrunk");
-    if (hamburgerNav) hamburgerNav.classList.remove("shrunk");
+    desktopNav?.classList.remove("shrunk");
+    hamburgerNav?.classList.remove("shrunk");
+  }
+
+  if (backToTopBtn) {
+    backToTopBtn.style.display = window.scrollY > 400 ? "flex" : "none";
   }
 }
 
-// Listen for scroll events
-window.addEventListener("scroll", handleScroll);
-
-// Also run on page load (Fixes state if page is refreshed while scrolled)
-window.addEventListener("load", handleScroll);
-
-// --- 2. MOBILE HAMBURGER MENU TOGGLE ---
-function toggleMenu() {
-  const menu = document.querySelector(".menu-links");
-  const icon = document.querySelector(".hamburger-icon");
-
-  if (menu && icon) {
-    menu.classList.toggle("open");
-    icon.classList.toggle("open");
-  }
-}
-
-// --- 3. AUTO-CLOSE MOBILE MENU ---
-// Closes the dropdown automatically when a user clicks a link
-document.addEventListener("click", function (event) {
-  const menu = document.querySelector(".menu-links");
-  const icon = document.querySelector(".hamburger-icon");
-  const isClickInsideMenu = menu.contains(event.target);
-  const isClickOnIcon = icon.contains(event.target);
-
-  // If the menu is open and the user clicks a link or outside the menu, close it
-  if (menu.classList.contains("open") && !isClickOnIcon) {
-    menu.classList.remove("open");
-    icon.classList.remove("open");
-  }
-});
-
-// --- 4. SMOOTH SCROLL OFFSET FIX ---
-// Ensures that when clicking a link, the fixed header doesn't cover the section title
-document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-  anchor.addEventListener("click", function (e) {
-    e.preventDefault();
-    const targetId = this.getAttribute("href");
-    const targetElement = document.querySelector(targetId);
-
-    if (targetElement) {
-      const navHeight = document.querySelector("#desktop-nav").offsetHeight;
-      const targetPosition =
-        targetElement.getBoundingClientRect().top +
-        window.pageYOffset -
-        navHeight;
-
-      window.scrollTo({
-        top: targetPosition,
-        behavior: "smooth",
-      });
-    }
-  });
-});
-
-// --- 6. PROJECT MODAL LOGIC ---
+// --- 2. MODAL CONTROLS ---
 function openProjectModal(modalId) {
   const modal = document.getElementById(modalId);
   if (modal) {
-    modal.showModal(); // This is the built-in function for <dialog>
-    document.body.style.overflow = "hidden"; // Prevents background scrolling
+    modal.showModal();
+    document.body.style.overflow = "hidden";
   }
 }
 
 function closeProjectModal(modalId) {
   const modal = document.getElementById(modalId);
   if (modal) {
-    modal.close(); // Closes the <dialog>
-    document.body.style.overflow = "auto"; // Re-enables scrolling
+    modal.close();
+    document.body.style.overflow = "auto";
   }
 }
 
-// Close modal if user clicks the dark background (outside the box)
-document.querySelectorAll(".project-modal").forEach((modal) => {
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      closeProjectModal(modal.id);
+// --- 3. PAGINATION SYSTEM ---
+function renderProjects() {
+  const projects = document.getElementsByClassName("project-item");
+  const wrapper = document.getElementById("page-numbers-wrapper");
+  const prevBtn = document.getElementById("btn-prev");
+  const nextBtn = document.getElementById("btn-next");
+
+  if (!projects.length) return;
+
+  const totalPages = Math.ceil(projects.length / recordsPerPage);
+
+  // Hide/Show specific cards
+  for (let i = 0; i < projects.length; i++) {
+    projects[i].style.display = "none";
+    if (
+      i >= (currentProjectPage - 1) * recordsPerPage &&
+      i < currentProjectPage * recordsPerPage
+    ) {
+      projects[i].style.display = "flex";
     }
-  });
+  }
+
+  // Generate circular page numbers
+  if (wrapper) {
+    wrapper.innerHTML = "";
+    for (let i = 1; i <= totalPages; i++) {
+      const pageBtn = document.createElement("button");
+      pageBtn.className = `page-num ${
+        i === currentProjectPage ? "active" : ""
+      }`;
+      pageBtn.innerText = i;
+      pageBtn.onclick = () => {
+        currentProjectPage = i;
+        renderProjects();
+        document
+          .getElementById("projects")
+          .scrollIntoView({ behavior: "smooth" });
+      };
+      wrapper.appendChild(pageBtn);
+    }
+  }
+
+  // Toggle Arrow visibility
+  if (prevBtn)
+    prevBtn.style.visibility = currentProjectPage === 1 ? "hidden" : "visible";
+  if (nextBtn)
+    nextBtn.style.visibility =
+      currentProjectPage === totalPages ? "hidden" : "visible";
+}
+
+function prevPage() {
+  if (currentProjectPage > 1) {
+    currentProjectPage--;
+    renderProjects();
+    document.getElementById("projects").scrollIntoView({ behavior: "smooth" });
+  }
+}
+
+function nextPage() {
+  const projects = document.getElementsByClassName("project-item");
+  if (currentProjectPage < Math.ceil(projects.length / recordsPerPage)) {
+    currentProjectPage++;
+    renderProjects();
+    document.getElementById("projects").scrollIntoView({ behavior: "smooth" });
+  }
+}
+
+// --- 4. UTILITIES ---
+function toggleMenu() {
+  const menu = document.querySelector(".menu-links");
+  const icon = document.querySelector(".hamburger-icon");
+  menu.classList.toggle("open");
+  icon.classList.toggle("open");
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// --- 5. INITIALIZE ---
+window.addEventListener("scroll", handleScroll);
+window.addEventListener("load", () => {
+  handleScroll();
+  renderProjects();
 });
