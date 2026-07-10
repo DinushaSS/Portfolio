@@ -3,7 +3,7 @@
  */
 
 let currentProjectPage = 1;
-const recordsPerPage = 6;
+const recordsPerPage = 3;
 
 // --- 1. CORE NAVIGATION LOGIC ---
 function handleScroll() {
