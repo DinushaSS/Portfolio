@@ -417,12 +417,44 @@
           <div class="details-container color-container project-item">
             <div class="article-container">
               <img
-                src="./assets/project-4.png"
+                src="./assets/project-4.jpg"
                 alt="Project 4"
                 class="project-img"
               />
             </div>
             <h2 class="experience-sub-title project-title">Project Four</h2>
+            <p class="project-description">
+              Educational Cover Page & Print Asset Design | Adobe Photoshop
+            </p>
+            <div class="btn-container">
+              <button
+                class="btn btn-color-2 project-btn"
+                onclick="
+                  window.open(
+                    'https://github.com/DinushaSS/Educational-Cover-Page_Design_01_Adobe-Photoshop',
+                  )
+                "
+              >
+                Github
+              </button>
+              <button
+                class="btn btn-color-2 project-btn"
+                onclick="openProjectModal('project4Modal')"
+              >
+                Read More
+              </button>
+            </div>
+          </div>
+          <!-- Project 5 -->
+          <div class="details-container color-container project-item">
+            <div class="article-container">
+              <img
+                src="./assets/project-5.png"
+                alt="Project 5"
+                class="project-img"
+              />
+            </div>
+            <h2 class="experience-sub-title project-title">Project Five</h2>
             <p class="project-description">Upcoming.</p>
             <div class="btn-container">
               <button
@@ -439,7 +471,7 @@
               </button>
               <button
                 class="btn btn-color-2 project-btn"
-                onclick="openProjectModal('project3Modal')"
+                onclick="openProjectModal('project5Modal')"
               >
                 Read More
               </button>
@@ -549,6 +581,34 @@
     </dialog>
 
     <dialog id="project4Modal" class="project-modal">
+      <button
+        class="close-modal"
+        onclick="closeProjectModal('project4Modal')"
+        aria-label="Close modal"
+      >
+        &times;
+      </button>
+      <h2 class="experience-sub-title">Project Four</h2>
+      <p class="section__text__p1">
+        Educational Cover Page & Print Asset Design | Adobe Photoshop
+      </p>
+      <div class="modal-list-container">
+        <p>
+          This project focuses on creating visually engaging, print-ready
+          educational materials tailored for mathematics instruction. By
+          leveraging advanced image manipulation, custom color schemes, and
+          layout composition, the design transforms standard instructional
+          content into professional, high-quality learning assets.
+        </p>
+        <ul>
+          <li>Graphic Layout & Composition</li>
+          <li>Image Manipulation & Retouching</li>
+          <li>Print Asset Optimization</li>
+        </ul>
+      </div>
+    </dialog>
+
+    <dialog id="project5Modal" class="project-modal">
       <button
         class="close-modal"
         onclick="closeProjectModal('project3Modal')"
